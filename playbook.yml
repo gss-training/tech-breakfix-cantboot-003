@@ -1,0 +1,9 @@
+ 
+---
+
+- hosts: all
+  tasks:
+  - name: Creating an empty file
+    file:
+      path: "/tech-breakfix-cantboot-003"
+      state: touch
