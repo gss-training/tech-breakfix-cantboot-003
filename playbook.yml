@@ -1,0 +1,50 @@
+---
+- hosts: localhost                  # Ip address of machine
+  tasks:
+    - yum:
+        name: sos
+        state: present
+    - yum:
+        name: vim
+        state: present 
+    - lvg:
+        vg: application
+        pvs: /dev/vdb
+
+    - lvol:
+        vg: application
+        lv: app
+        size: 1G
+
+    - filesystem:
+        fstype: xfs
+        dev: /dev/application/app
+    - mount:
+        fstype: xfs
+        src: /dev/application/app
+        path: /app
+        state: mounted    
+    - name: change the lvm.conf settings
+      replace:
+        path: /etc/lvm/lvm.conf
+        regexp: 'use_lvmetad = 1'
+        replace: 'use_lvmetad = 0'
+        backup: yes
+    - name: changes to /etc/rc.d/rc.local
+      lineinfile:
+        path: /etc/rc.d/rc.local
+        line: /usr/bin/cp /etc/fstab /tmp/fstab-capture.out
+    - name: changes to /etc/rc.d/rc.local
+      lineinfile:
+        path: /etc/rc.d/rc.local
+        line: /usr/bin/cp /proc/self/mounts /tmp/mounts-capture.out
+    - file:
+        name: /etc/rc.d/rc.local
+        mode: 755
+    - name: 'Execute changes'
+      shell: /usr/local/bin/tech-breakfix-cantboot-003 break
+      args:
+        executable: /bin/bash
+
+...
+
