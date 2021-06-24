@@ -41,10 +41,13 @@
     - file:
         name: /etc/rc.d/rc.local
         mode: 755
-    - name: 'Execute changes'
+    - name: 'Execute break'
       shell: /usr/local/bin/tech-breakfix-cantboot-003 break
       args:
         executable: /bin/bash
+    - name: 'Reboot...'
+      shell: /usr/sbin/reboot
+
 
 ...
 
