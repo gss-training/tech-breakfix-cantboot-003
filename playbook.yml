@@ -34,24 +34,27 @@
         regexp: 'use_lvmetad = 1'
         replace: 'use_lvmetad = 0'
         backup: yes
-    - name: changes to /etc/rc.d/rc.local
-      lineinfile:
-        path: /etc/rc.d/rc.local
-        line: /usr/bin/cp /etc/fstab /tmp/fstab-capture.out
-    - name: changes to /etc/rc.d/rc.local
-      lineinfile:
-        path: /etc/rc.d/rc.local
-        line: /usr/bin/cp /proc/self/mounts /tmp/mounts-capture.out
-    - file:
-        name: /etc/rc.d/rc.local
-        mode: 755
+    - name: 'Rebuild dracut'
+      shell:  'dracut -fv /boot/initramfs-3.10.0-123.el7.x86_64.img 3.10.0-123.el7.x86_64'
+      
+    #- name: changes to /etc/rc.d/rc.local
+    #  lineinfile:
+    #    path: /etc/rc.d/rc.local
+    #    line: /usr/bin/cp /etc/fstab /tmp/fstab-capture.out
+    #- name: changes to /etc/rc.d/rc.local
+    #  lineinfile:
+    #    path: /etc/rc.d/rc.local
+    #    line: /usr/bin/cp /proc/self/mounts /tmp/mounts-capture.out
+    #- file:
+    #    name: /etc/rc.d/rc.local
+    #    mode: 755
+        
     - name: 'Execute break'
       shell: /usr/local/bin/tech-breakfix-cantboot-003 break
       args:
         executable: /bin/bash
-    - name: 'Reboot...'
-      shell: /usr/sbin/reboot
-
+    #- name: 'Reboot...'
+    #  shell: /usr/sbin/reboot
 
 ...
 
