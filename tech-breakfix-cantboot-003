@@ -17,6 +17,10 @@ break() {
         # resize the parition
 
         yes | lvreduce -L 500M /dev/mapper/application-app
+        echo '/usr/bin/cp /etc/fstab /tmp/fstab-capture.out' >> /etc/rc.d/rc.local
+        echo '/usr/bin/cp /proc/self/mounts /tmp/mounts-capture.out' >> /etc/rc.d/rc.local
+
+        chmod +x /etc/rc.d/rc.local
 
         touch /var/tmp/.kc1
         echo "Applying break....        DONE"
